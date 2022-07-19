@@ -11,11 +11,9 @@
     <img src="img/mobile.gif" alt="instagram-mobile-gif" height="410">
 </div>
 
----
+<hr>
 
-
-# Projeto Hospedado
-
+# Projeto Hospedado 
 <p>O projeto esta hospedado no Link abaixo:</p>
 <a href="https://matheus-bezerra.github.io/Instagramer/">https://matheus-bezerra.github.io/Instagramer/</a>
 

@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 // @ts-ignore
-import { useSidebarDrawer } from '../../../contexts/SideBarDrawerContext';
+import { useSidebarDrawer } from '../../contexts/SideBarDrawerContext';
 import { SideBarNav } from './SideBarNav';
 
 export const Sidebar = () => {
