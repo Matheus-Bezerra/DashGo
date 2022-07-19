@@ -3,7 +3,7 @@
     DashGo<span style="color: #D53F8C">.</span> 
 <br>
 </h1>
-<p align="center">Foi criado uma Dashboard com formulários de validações, buscando o  máximo de aprendizado possível usando Chakra UI e React Hook Form com YUP integrado. O projeto ganhará mais funcionalidades em breve, como requisições para preencher dados tanto na tabela quanto nos gráficos, Autenticação com a API do Github usando Next Auth, entre outras, fique ligado😉.</p>
+<p align="center">Foi criado uma Dashboard buscando o máximo de aprendizado possível sobre o Chakra UI (criar interface de modo declarativo) e React Hook Form com YUP integrado para validações nos formulários. O projeto ganhará mais funcionalidades em breve, como requisições para preencher dados tanto na tabela quanto nos gráficos, Autenticação com a API do Github usando Next Auth, entre outras, fique ligado😉.</p>
 <hr> <br>
 
 <div align="center">
@@ -12,12 +12,6 @@
 </div>
 
 <hr>
-
-# Projeto Hospedado 
-<p>O projeto esta hospedado no Link abaixo:</p>
-<a href="https://matheus-bezerra.github.io/Instagramer/">https://matheus-bezerra.github.io/Instagramer/</a>
-
----
 <br>
 
 ## Tecnologias
