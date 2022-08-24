@@ -4,14 +4,26 @@ import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next';
 import { theme } from '../../styles/theme';
 // @ts-ignore
 import { SidebarDrawerProvider } from '../contexts/SideBarDrawerContext';
+import { makeServer } from '../services/mirage';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+if (process.env.NODE_ENV === 'development') {
+  makeServer();
+}
+
+const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider theme={theme}>
-      <SidebarDrawerProvider>
-        <Component {...pageProps} />
-      </SidebarDrawerProvider>
-    </ChakraProvider>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider theme={theme}>
+        <SidebarDrawerProvider>
+          <Component {...pageProps} />
+        </SidebarDrawerProvider>
+      </ChakraProvider>
+      <ReactQueryDevtools />
+    </QueryClientProvider>
   );
 }
 
