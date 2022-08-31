@@ -12,10 +12,11 @@ import {
   Th,
   Thead,
   Tr,
+  Link as LinkChakra,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import Link from 'next/link';
-import React, { useEffect } from 'react';
+import NextLink from 'next/link';
+import React, { useEffect, useState } from 'react';
 import { RiAddLine, RiPencilLine } from 'react-icons/ri';
 import { useQuery } from '@tanstack/react-query';
 import { Header } from '../../components/header';
@@ -24,16 +25,31 @@ import { Sidebar } from '../../components/Sidebar';
 import { Spinner } from '@chakra-ui/react';
 import { api } from '../../services/api';
 import { useUsers } from '../../services/hooks/useUsers';
+import { queryClient } from '../../services/queryClient';
 
 const UserList = () => {
-  const { data, isLoading, isFetching, error } = useUsers();
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isFetching, error } = useUsers(page);
 
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   });
 
-  useEffect(() => {}, []);
+  async function handlePrefetchUser(userId: string) {
+    await queryClient.prefetchQuery(
+      ['user', userId],
+      async () => {
+        const response = await api.get(`users/${userId}`);
+
+        return response.data;
+      },
+      {
+        staleTime: 1000 * 60 * 10, // 10 minutes
+      },
+    );
+  }
+
   return (
     <Box>
       <Header />
@@ -50,17 +66,19 @@ const UserList = () => {
               )}
             </Heading>
 
-            <Link href="users/create" passHref>
-              <Button
-                as="a"
-                size="sm"
-                fontSize="sm"
-                colorScheme="pink"
-                leftIcon={<Icon as={RiAddLine} fontSize="20" />}
-              >
-                Criar novo
-              </Button>
-            </Link>
+            <NextLink href="users/create" passHref>
+              <NextLink>
+                <Button
+                  as="a"
+                  size="sm"
+                  fontSize="sm"
+                  colorScheme="pink"
+                  leftIcon={<Icon as={RiAddLine} fontSize="20" />}
+                >
+                  Criar novo
+                </Button>
+              </NextLink>
+            </NextLink>
           </Flex>
 
           {isLoading ? (
@@ -69,7 +87,7 @@ const UserList = () => {
             </Flex>
           ) : error ? (
             <Flex justify="center">
-              <Text>Falah ao obter dados dos usuários</Text>
+              <Text>Falha ao obter dados dos usuários</Text>
             </Flex>
           ) : (
             <>
@@ -86,7 +104,7 @@ const UserList = () => {
                 </Thead>
                 <Tbody>
                   {data &&
-                    data.map((user: any) => {
+                    data.users.map((user: any) => {
                       return (
                         <Tr key={user.id}>
                           <Td px={['4', '4', '6']}>
@@ -94,7 +112,12 @@ const UserList = () => {
                           </Td>
                           <Td>
                             <Box>
-                              <Text fontWeight="bold">{user.name}</Text>
+                              <LinkChakra
+                                color="purple.400"
+                                onMouseEnter={() => handlePrefetchUser(user.id)}
+                              >
+                                <Text fontWeight="bold">{user.name}</Text>
+                              </LinkChakra>
                               <Text fontSize="sm" color="gray.300">
                                 {user.email}
                               </Text>
@@ -122,7 +145,11 @@ const UserList = () => {
                 </Tbody>
               </Table>
 
-              <Pagination />
+              <Pagination
+                totalCountOfRegisters={data?.totalCount ? data.totalCount : 100}
+                currentPage={page}
+                onPageChange={setPage}
+              />
             </>
           )}
         </Box>
