@@ -1,29 +1,27 @@
-import { AppProps } from 'next/app';
-import { ChakraProvider } from '@chakra-ui/react';
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next';
-import { theme } from '../../styles/theme';
-// @ts-ignore
-import { SidebarDrawerProvider } from '../contexts/SideBarDrawerContext';
-import { makeServer } from '../services/mirage';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { queryClient } from '../services/queryClient';
+import { AppProps } from 'next/app'
+import { ChakraProvider } from '@chakra-ui/react'
+import { QueryClientProvider } from 'react-query'
+
+import { theme } from '../styles/theme'
+import { SidebarDrawerProvider } from '../contexts/SidebarDrawerContext'
+import { myServer } from '../services/mirage'
+import { queryClient } from '../services/queryClient'
 
 if (process.env.NODE_ENV === 'development') {
-  makeServer();
+  myServer()  //inicia o servidor Mirage
 }
+
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ChakraProvider theme={theme}>
+    <ChakraProvider theme={theme} >
+      <QueryClientProvider client={queryClient}>
         <SidebarDrawerProvider>
           <Component {...pageProps} />
         </SidebarDrawerProvider>
-      </ChakraProvider>
-      <ReactQueryDevtools />
-    </QueryClientProvider>
-  );
+      </QueryClientProvider>
+    </ChakraProvider>
+  )
 }
 
-export default MyApp;
+export default MyApp

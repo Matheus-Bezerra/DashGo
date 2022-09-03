@@ -1,14 +1,15 @@
-import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
-import React from 'react';
+import { Flex, Text, Box, Avatar } from '@chakra-ui/react';
 
-interface ProfileProps {
-  showProfileData?: boolean;
-}
+type ProfileProps = {
+  showName?: boolean;
+};
 
-export const Profile = ({ showProfileData }: ProfileProps) => {
+// Só mostra o nome e e-mail se showName = true
+
+export function Profile({ showName = true }: ProfileProps) {
   return (
     <Flex align="center">
-      {showProfileData && (
+      {showName && (
         <Box mr="4" textAlign="right">
           <Text>Matheus Bezerra</Text>
           <Text color="gray.300" fontSize="small">
@@ -20,8 +21,14 @@ export const Profile = ({ showProfileData }: ProfileProps) => {
       <Avatar
         size="md"
         name="Matheus Bezerra"
-        src="https://github.com/Matheus-Bezerra.png"
+        src="http://github.com/Matheus-Bezerra.png"
       />
     </Flex>
   );
-};
+}
+
+// Flex é um container com display Flex
+// Stack é um container que permite espaçamento igual entre os componentes
+// HStack é um Stack com display inline-block
+// Box é uma div vazia
+// Avatar tem a vantagem de mostrar as iniciais, caso não tenha imagem

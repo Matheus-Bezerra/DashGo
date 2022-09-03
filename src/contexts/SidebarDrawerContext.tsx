@@ -1,30 +1,29 @@
-import { useDisclosure, UseDisclosureReturn } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { createContext, ReactNode, useContext, useEffect } from 'react';
+import { createContext, useContext, ReactNode, useEffect } from 'react'
+import { useDisclosure, UseDisclosureReturn } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 
-interface SidebarDrawerProviderProps {
-  children: ReactNode;
+type SidebarDrawerProviderProps = {
+    children: ReactNode;
 }
 
-type sidebarDrawerContextData = UseDisclosureReturn;
+type SidebarDrawerContextData = UseDisclosureReturn
 
-const SidebarDrawerContext = createContext({} as sidebarDrawerContextData);
+const SidebarDrawerContext = createContext({} as SidebarDrawerContextData)
 
-export function SidebarDrawerProvider({
-  children,
-}: SidebarDrawerProviderProps) {
-  const disclosure = useDisclosure();
-  const router = useRouter();
+export function SidebarDrawerProvider({ children }: SidebarDrawerProviderProps) {
+    const disclosure = useDisclosure()
+    const router = useRouter()
 
-  useEffect(() => {
-    disclosure.onClose();
-  }, [router.asPath]);
-
-  return (
-    <SidebarDrawerContext.Provider value={disclosure}>
-      {children}
-    </SidebarDrawerContext.Provider>
-  );
+    useEffect(() => {
+        // Toda vez que mudar o caminho da rota, fecha a sidebar
+        disclosure.onClose()
+    }, [router.asPath]) 
+    
+    return (
+        <SidebarDrawerContext.Provider value={disclosure}>
+            {children}
+        </SidebarDrawerContext.Provider>
+    )
 }
 
-export const useSidebarDrawer = () => useContext(SidebarDrawerContext);
+export const useSidebarDrawer = () => useContext(SidebarDrawerContext)

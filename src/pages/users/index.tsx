@@ -1,41 +1,27 @@
-import {
-  Box,
-  Button,
-  Checkbox,
-  Flex,
-  Heading,
-  Icon,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  Link as LinkChakra,
-  useBreakpointValue,
-} from '@chakra-ui/react';
-import NextLink from 'next/link';
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { Box, Flex, Button, Heading, Icon, Spinner } from '@chakra-ui/react';
+import { Link, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { Checkbox, Text, useBreakpointValue } from '@chakra-ui/react';
 import { RiAddLine, RiPencilLine } from 'react-icons/ri';
-import { useQuery } from '@tanstack/react-query';
-import { Header } from '../../components/header';
-import Pagination from '../../components/Pagination';
+
+import { Header } from '../../components/Header';
 import { Sidebar } from '../../components/Sidebar';
-import { Spinner } from '@chakra-ui/react';
-import { api } from '../../services/api';
+import { Pagination } from '../../components/Pagination';
 import { useUsers } from '../../services/hooks/useUsers';
 import { queryClient } from '../../services/queryClient';
+import { api } from '../../services/api';
 
-const UserList = () => {
-  const [page, setPage] = useState(1);
-  const { data, isLoading, isFetching, error } = useUsers(page);
+export default function UserList() {
+  const [curPage, setCurPage] = useState(1);
+  const { data, isLoading, isFetching, error } = useUsers(curPage);
 
-  const isWideVersion = useBreakpointValue({
+  const isTelaGrande = useBreakpointValue({
     base: false,
     lg: true,
   });
 
+  // Ao passar o mouse sobre o nome do usuário, o react-query
+  // pré-carrega os dados do usuário e armazena em cache
   async function handlePrefetchUser(userId: string) {
     await queryClient.prefetchQuery(
       ['user', userId],
@@ -45,7 +31,7 @@ const UserList = () => {
         return response.data;
       },
       {
-        staleTime: 1000 * 60 * 10, // 10 minutes
+        staleTime: 1000 * 60 * 10, // 10 minutos
       },
     );
   }
@@ -58,27 +44,24 @@ const UserList = () => {
         <Sidebar />
 
         <Box flex="1" borderRadius={8} bg="gray.800" p="8">
-          <Flex mb="8" justify="space-between" align="center">
+          <Flex mb="8" justifyContent="space-between" align="center">
             <Heading size="lg" fontWeight="normal">
               Usuários
-              {!isLoading && isFetching && (
-                <Spinner size="sm" color="gray.500" ml="4" />
-              )}
+              {!isLoading && isFetching && <Spinner color="gray.500" ml="4" />}
             </Heading>
 
-            <NextLink href="users/create" passHref>
-              <NextLink>
-                <Button
-                  as="a"
-                  size="sm"
-                  fontSize="sm"
-                  colorScheme="pink"
-                  leftIcon={<Icon as={RiAddLine} fontSize="20" />}
-                >
-                  Criar novo
-                </Button>
-              </NextLink>
-            </NextLink>
+            {/*<Link href="/users/create" passHref>*/}
+            <Button
+              as="a"
+              href="/users/create"
+              size="sm"
+              fontSize="sm"
+              colorScheme="twitter"
+              leftIcon={<Icon as={RiAddLine} fontSize="20" />}
+            >
+              Criar novo
+            </Button>
+            {/*</Link>*/}
           </Flex>
 
           {isLoading ? (
@@ -95,60 +78,53 @@ const UserList = () => {
                 <Thead>
                   <Tr>
                     <Th px={['4', '4', '6']} color="gray.300" width="8">
-                      <Checkbox colorScheme="pink" />
+                      <Checkbox colorScheme="twitter" />
                     </Th>
                     <Th>Usuário</Th>
-                    {isWideVersion && <Th>Data de cadastro</Th>}
-                    {isWideVersion && <Th></Th>}
+                    {isTelaGrande && <Th>Data de cadastro</Th>}
+                    <Th width="8"></Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data &&
-                    data.users.map((user: any) => {
-                      return (
-                        <Tr key={user.id}>
-                          <Td px={['4', '4', '6']}>
-                            <Checkbox colorScheme="pink" />
-                          </Td>
-                          <Td>
-                            <Box>
-                              <LinkChakra
-                                color="purple.400"
-                                onMouseEnter={() => handlePrefetchUser(user.id)}
-                              >
-                                <Text fontWeight="bold">{user.name}</Text>
-                              </LinkChakra>
-                              <Text fontSize="sm" color="gray.300">
-                                {user.email}
-                              </Text>
-                            </Box>
-                          </Td>
-                          {isWideVersion && <Td>{user.createdAt}</Td>}
-                          {isWideVersion && (
-                            <Td>
-                              <Button
-                                as="a"
-                                size="sm"
-                                fontSize="sm"
-                                colorScheme="purple"
-                                leftIcon={
-                                  <Icon as={RiPencilLine} fontSize="16" />
-                                }
-                              >
-                                Editar
-                              </Button>
-                            </Td>
-                          )}
-                        </Tr>
-                      );
-                    })}
+                  {data.users.map((user) => (
+                    <Tr key={user.id}>
+                      <Td px={['4', '4', '6']}>
+                        <Checkbox colorScheme="twitter" />
+                      </Td>
+                      <Td>
+                        <Box>
+                          <Link
+                            color="twitter.100"
+                            onMouseEnter={() => handlePrefetchUser(user.id)}
+                          >
+                            <Text fontWeight="bold">{user.name}</Text>
+                          </Link>
+                          <Text fontSize="sm" color="gray.300">
+                            {user.email}
+                          </Text>
+                        </Box>
+                      </Td>
+                      {isTelaGrande && <Td>{user.created_at}</Td>}
+                      <Td>
+                        <Button
+                          as="a"
+                          size="sm"
+                          fontSize="sm"
+                          colorScheme="green"
+                          leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
+                        >
+                          {isTelaGrande ? 'Editar' : ''}
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))}
                 </Tbody>
               </Table>
 
               <Pagination
-                totalCountOfRegisters={data?.totalCount ? data.totalCount : 100}
-                currentPage={page}
-                onPageChange={setPage}
+                totalCountOfRegisters={data.totalCount}
+                currentPage={curPage}
+                onPageChange={setCurPage}
               />
             </>
           )}
@@ -156,6 +132,4 @@ const UserList = () => {
       </Flex>
     </Box>
   );
-};
-
-export default UserList;
+}

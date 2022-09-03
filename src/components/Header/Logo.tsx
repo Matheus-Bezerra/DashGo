@@ -1,18 +1,20 @@
 import { Text } from '@chakra-ui/react';
-import React from 'react';
 
-export const Logo = () => {
+export function Logo() {
   return (
     <Text
       fontSize={['2xl', '3xl']}
       fontWeight="bold"
       letterSpacing="tight"
-      w="64"
+      width="64"
     >
-      dashgo
-      <Text as="span" ml="1" color="pink.500">
+      dashGo
+      <Text as="span" ml="1" color="twitter.500">
         .
       </Text>
     </Text>
   );
-};
+}
+
+// Breakpoints do Chakra-UI: tamanhos pré-definidos p/ responsividade
+// sm, md, lg, xl, 2xl, 3xl...
