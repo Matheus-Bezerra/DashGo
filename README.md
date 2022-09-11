@@ -7,8 +7,7 @@
 <hr> <br>
 
 <div align="center">
-    <img src="img/desktop.gif" alt="instagram-responsivo-gif" height="410">
-    <img src="img/mobile.gif" alt="instagram-mobile-gif" height="410">
+    <img src="public/dashGo.gif" alt="DashGo Sistema" height="410">
 </div>
 
 <hr>
