@@ -7,7 +7,7 @@
 <hr> <br>
 
 <div align="center">
-    <img src="public/dashGo.gif" alt="DashGo Sistema" height="410">
+    <img src="./image/dashGo.gif" alt="DashGo Sistema" height="410">
 </div>
 
 <hr>
