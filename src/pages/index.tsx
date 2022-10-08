@@ -1,10 +1,11 @@
 import { Flex, Button, Stack } from '@chakra-ui/react';
 import { Input } from '../components/Form/Input';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AuthContext, AuthProvider } from '../contexts/AuthContext';
 
 type SignInFormData = {
   email: string;
@@ -26,13 +27,16 @@ export default function SignIn() {
   });
   const router = useRouter();
 
+  const { signIn } = useContext(AuthContext);
+
   const errors = formState.errors;
 
   //const handleSignIn: SubmitHandler<SignInFormData> = (values) => {
   function handleSignIn(values: SignInFormData) {
     setLoading(true);
-    console.debug(values);
-    router.push('/dashboard');
+    signIn(values);
+    setLoading(false);
+    // router.push('/dashboard');
   }
 
   return (
