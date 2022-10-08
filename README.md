@@ -21,6 +21,7 @@ O projeto foi desenvolvido com as seguintes Tecnologias:
 - Next
 - Typescript
 - Tan Stack
+- Axios
 - MirageJs
 - Faker
 - Chakra UI
